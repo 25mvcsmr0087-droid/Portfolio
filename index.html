@@ -1,9 +1,1005 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Site</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vipul Preetham — Web Designer, Hyderabad</title>
+  <meta name="description" content="Web designer from Hyderabad. 3–7 day delivery, real prices, no agency nonsense.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* ── Cursor ───────────────────────────────────── */
+    #cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--black);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.15s ease, height 0.15s ease, background 0.15s ease;
+      will-change: left, top;
+    }
+    #cursor.hovered {
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 1.5px solid var(--black);
+    }
+
+    /* ── Navbar ───────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 48px;
+      border-bottom: 1px solid var(--black);
+      background: var(--white);
+      transition: background 0s, border-color 0s;
+    }
+    #nav.dark {
+      background: var(--black);
+      border-bottom-color: rgba(255,255,255,0.15);
+    }
+    #nav.dark .nav-logo { color: var(--white); }
+    #nav.dark .nav-cta { color: var(--white); border-color: var(--white); }
+    #nav.dark .nav-cta:hover { background: var(--white); color: var(--black); }
+
+    .nav-logo {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+    }
+    .nav-cta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--black);
+      border: 1px solid var(--black);
+      padding: 10px 22px;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--black); color: var(--white); }
+
+    /* ── Hero ─────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      padding: 130px 48px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-body { flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; }
+
+    .hero-hl {
+      font-family: 'Clash Display', sans-serif;
+      line-height: 0.88;
+      margin-bottom: 36px;
+    }
+    .hl-thin {
+      font-size: clamp(56px, 9.5vw, 136px);
+      font-weight: 300;
+      display: block;
+      overflow: hidden;
+    }
+    .hl-bold {
+      font-size: clamp(56px, 9.5vw, 136px);
+      font-weight: 800;
+      display: block;
+      overflow: hidden;
+    }
+    .hl-inner { display: block; }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      opacity: 0.55;
+    }
+
+    .hero-num {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(140px, 22vw, 280px);
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(0,0,0,0.08);
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .hero-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 48px;
+    }
+
+    .scroll-ind {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.4;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 64px;
+      background: var(--black);
+      transform-origin: top;
+      animation: lineAnim 2.2s ease-in-out infinite;
+    }
+    @keyframes lineAnim {
+      0%,100% { opacity: 0.3; transform: scaleY(1); }
+      50%      { opacity: 1;   transform: scaleY(0.45); }
+    }
+
+    .avail {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+    .avail-dot {
+      width: 8px; height: 8px;
+      background: var(--black);
+      border-radius: 50%;
+      animation: dotPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes dotPulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+    /* ── Marquee ──────────────────────────────────── */
+    #marquee {
+      background: var(--black);
+      color: var(--white);
+      padding: 16px 0;
+      overflow: hidden;
+    }
+    .mq-track {
+      display: flex;
+      white-space: nowrap;
+      animation: mq 28s linear infinite;
+    }
+    .mq-set {
+      display: flex;
+      flex-shrink: 0;
+    }
+    .mq-item {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0 28px;
+    }
+    .mq-dot { opacity: 0.35; padding: 0 4px; }
+    @keyframes mq {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── Shared section base ──────────────────────── */
+    .sec-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 1;
+      margin-bottom: 56px;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .sec-label::after {
+      content: '';
+      display: inline-block;
+      width: 36px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    /* ── Projects ─────────────────────────────────── */
+    #projects { padding: 96px 48px; }
+
+    .proj-hl {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(30px, 4.5vw, 58px);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 60px;
+    }
+
+    .proj-row {
+      display: grid;
+      grid-template-columns: 90px 1fr auto;
+      align-items: center;
+      gap: 40px;
+      padding: 28px 0;
+      border-top: 1px solid var(--black);
+    }
+    .proj-row:last-child { border-bottom: 1px solid var(--black); }
+    .proj-row {
+      transition: none;
+      position: relative;
+    }
+    .proj-row::before {
+      content: '';
+      position: absolute;
+      inset: 0 -48px;
+      background: var(--black);
+      opacity: 0;
+      transition: opacity 0s;
+    }
+    .proj-row:hover::before { opacity: 1; }
+    .proj-row:hover { color: var(--white); }
+    .proj-row > * { position: relative; z-index: 1; }
+
+    .proj-n {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 700;
+      opacity: 0.13;
+    }
+    .proj-info { display: flex; flex-direction: column; gap: 5px; }
+    .proj-name {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(18px, 2.5vw, 34px);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+    .proj-desc {
+      font-size: 0.88rem;
+      font-weight: 300;
+      opacity: 0.55;
+      max-width: 480px;
+    }
+    .proj-link {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: inherit;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── About ────────────────────────────────────── */
+    #about {
+      border-top: 1px solid var(--black);
+      padding: 96px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      row-gap: 0;
+    }
+
+    .about-stmt {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(28px, 3.8vw, 56px);
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .about-stmt span { display: block; white-space: nowrap; }
+
+    .about-r {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 4px;
+    }
+    .about-r .sec-label { margin-bottom: 32px; }
+    .about-bio {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.78;
+      opacity: 0.75;
+    }
+
+    .about-stats {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--black);
+      margin-top: 72px;
+    }
+    .stat {
+      padding: 40px 32px 40px 0;
+      border-right: 1px solid var(--black);
+    }
+    .stat:not(:first-child) { padding-left: 32px; }
+    .stat:last-child { border-right: none; padding-right: 0; }
+    .stat-v {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(26px, 3vw, 42px);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .stat-l {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.45;
+    }
+
+    /* ── Services ─────────────────────────────────── */
+    #services {
+      border-top: 1px solid var(--black);
+      padding: 96px 48px;
+    }
+
+    .svc-hl {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(30px, 4.5vw, 58px);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 60px;
+    }
+
+    .acc-item { border-top: 1px solid var(--black); }
+    .acc-item:last-child { border-bottom: 1px solid var(--black); }
+
+    .acc-hd {
+      display: grid;
+      grid-template-columns: 56px 1fr 32px;
+      align-items: center;
+      gap: 20px;
+      padding: 26px 0;
+      user-select: none;
+    }
+    .acc-n {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      opacity: 0.35;
+      letter-spacing: 0.05em;
+    }
+    .acc-t {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(18px, 2.5vw, 30px);
+      font-weight: 600;
+    }
+    .acc-ic {
+      font-size: 1.6rem;
+      font-weight: 200;
+      line-height: 1;
+      transition: transform 0.25s ease;
+    }
+    .acc-item.open .acc-ic { transform: rotate(45deg); }
+
+    .acc-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease;
+    }
+    .acc-item.open .acc-body { max-height: 300px; }
+    .acc-body-in {
+      padding: 0 0 30px 76px;
+      font-size: 0.98rem;
+      font-weight: 300;
+      line-height: 1.78;
+      opacity: 0.65;
+      max-width: 560px;
+    }
+
+    /* ── Why Me ───────────────────────────────────── */
+    #whyme {
+      background: var(--black);
+      color: var(--white);
+      padding: 96px 48px;
+    }
+
+    .wm-hl {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(34px, 5.5vw, 78px);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .wm-sub {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(34px, 5.5vw, 78px);
+      font-weight: 300;
+      opacity: 0.45;
+      margin-bottom: 72px;
+    }
+
+    .wm-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    .wm-card {
+      padding: 40px 40px 40px 40px;
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .wm-card:first-child { padding-left: 0; }
+    .wm-card:last-child  { border-right: none; padding-right: 0; }
+    .wm-card-t {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .wm-card-d {
+      font-size: 0.88rem;
+      font-weight: 300;
+      opacity: 0.45;
+      line-height: 1.6;
+    }
+
+    /* ── Process ──────────────────────────────────── */
+    #process {
+      border-top: 1px solid var(--black);
+      padding: 96px 48px;
+    }
+
+    .proc-hl {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(30px, 4.5vw, 58px);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 80px;
+    }
+
+    .proc-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .proc-step {
+      padding: 0 44px 0 44px;
+      border-right: 1px solid var(--black);
+    }
+    .proc-step:first-child { padding-left: 0; }
+    .proc-step:last-child  { border-right: none; padding-right: 0; }
+    .proc-n {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(52px, 6vw, 84px);
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(0,0,0,0.18);
+      line-height: 1;
+      margin-bottom: 22px;
+    }
+    .proc-t {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .proc-d {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.38;
+    }
+
+    /* ── Contact ──────────────────────────────────── */
+    #contact {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 100px 48px 80px;
+      border-top: 1px solid var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ct-hl {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(64px, 13vw, 170px);
+      font-weight: 800;
+      line-height: 0.88;
+      margin-bottom: 28px;
+    }
+    .ct-sub {
+      font-size: 0.95rem;
+      font-weight: 300;
+      opacity: 0.45;
+      letter-spacing: 0.06em;
+      margin-bottom: 56px;
+    }
+
+    .wa-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 52px;
+      background: var(--black);
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-bottom: 22px;
+    }
+    .wa-btn:hover {
+      background: var(--white);
+      color: var(--black);
+      outline: 2px solid var(--black);
+    }
+
+    .ct-email {
+      font-size: 0.88rem;
+      opacity: 0.35;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .ct-email:hover { opacity: 0.9; }
+
+    .ist-clock {
+      position: absolute;
+      bottom: 40px; right: 48px;
+      text-align: right;
+    }
+    .ist-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.3;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .ist-time {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      opacity: 0.55;
+    }
+
+    /* ── Footer ───────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--black);
+      padding: 22px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ft-l, .ft-r {
+      font-size: 0.78rem;
+      opacity: 0.38;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Responsive ───────────────────────────────── */
+    @media (max-width: 900px) {
+      #nav, #hero, #projects, #about, #services, #whyme, #process, #contact, footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      #about { grid-template-columns: 1fr; gap: 48px; row-gap: 0; }
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2) { border-right: none; }
+      .stat:nth-child(3) { border-right: 1px solid var(--black); }
+
+      .wm-grid { grid-template-columns: repeat(2, 1fr); row-gap: 0; }
+      .wm-card { padding: 32px 24px 32px 0; }
+      .wm-card:nth-child(2n) { border-right: none; padding-right: 0; }
+      .wm-card:nth-child(n+3) { border-top: 1px solid rgba(255,255,255,0.15); }
+
+      .proc-steps { grid-template-columns: repeat(2, 1fr); gap: 0; }
+      .proc-step {
+        padding: 32px 24px 32px 24px;
+        border-bottom: 1px solid var(--black);
+      }
+      .proc-step:first-child { padding-left: 0; }
+      .proc-step:nth-child(2n) { border-right: none; padding-right: 0; }
+      .proc-step:nth-child(2n+1):not(:first-child) { padding-left: 0; }
+      .proc-step:nth-child(n+3) { border-bottom: none; }
+
+      .proj-row { grid-template-columns: 64px 1fr; }
+      .proj-link { display: none; }
+      .hero-num { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .wm-grid { grid-template-columns: 1fr; }
+      .wm-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); }
+      .wm-card:last-child { border-bottom: none; }
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(3) { border-right: none; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Yo this works 🔥</h1>
+
+  <div id="cursor"></div>
+
+  <!-- Navbar -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">Vipul Preetham</a>
+    <a href="#contact" class="nav-cta">Start a project →</a>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-body">
+      <h1 class="hero-hl">
+        <span class="hl-thin"><span class="hl-inner">Websites that</span></span>
+        <span class="hl-bold"><span class="hl-inner">MEAN BUSINESS.</span></span>
+      </h1>
+      <p class="hero-sub">Hyderabad &nbsp;·&nbsp; 3–7 day delivery &nbsp;·&nbsp; Real prices</p>
+      <div class="hero-num" aria-hidden="true">01</div>
+    </div>
+    <div class="hero-foot">
+      <div class="scroll-ind">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+      <div class="avail">
+        <span class="avail-dot"></span>
+        Available for projects
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div id="marquee" aria-hidden="true">
+    <div class="mq-track">
+      <div class="mq-set">
+        <span class="mq-item">Web Design</span><span class="mq-dot">·</span>
+        <span class="mq-item">Fast Delivery</span><span class="mq-dot">·</span>
+        <span class="mq-item">Hyderabad Based</span><span class="mq-dot">·</span>
+        <span class="mq-item">Premium Quality</span><span class="mq-dot">·</span>
+        <span class="mq-item">3–7 Days</span><span class="mq-dot">·</span>
+        <span class="mq-item">Real Prices</span><span class="mq-dot">·</span>
+        <span class="mq-item">No Agency Nonsense</span><span class="mq-dot">·</span>
+      </div>
+      <div class="mq-set" aria-hidden="true">
+        <span class="mq-item">Web Design</span><span class="mq-dot">·</span>
+        <span class="mq-item">Fast Delivery</span><span class="mq-dot">·</span>
+        <span class="mq-item">Hyderabad Based</span><span class="mq-dot">·</span>
+        <span class="mq-item">Premium Quality</span><span class="mq-dot">·</span>
+        <span class="mq-item">3–7 Days</span><span class="mq-dot">·</span>
+        <span class="mq-item">Real Prices</span><span class="mq-dot">·</span>
+        <span class="mq-item">No Agency Nonsense</span><span class="mq-dot">·</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects -->
+  <section id="projects">
+    <span class="sec-label">Selected Work</span>
+    <h2 class="proj-hl">Three projects.<br>Real results.</h2>
+
+    <div class="proj-row">
+      <span class="proj-n">01</span>
+      <div class="proj-info">
+        <span class="proj-name">Cafe Elaichi</span>
+        <span class="proj-desc">Premium restaurant website — menu, gallery, reservations, WhatsApp.</span>
+      </div>
+      <a href="https://cafe-elaichi.netlify.app" target="_blank" rel="noopener" class="proj-link">Visit →</a>
+    </div>
+
+    <div class="proj-row">
+      <span class="proj-n">02</span>
+      <div class="proj-info">
+        <span class="proj-name">GK Hospitals</span>
+        <span class="proj-desc">Multi-page hospital website — specialists, departments, appointments.</span>
+      </div>
+      <a href="https://gkwebsite-phi.vercel.app" target="_blank" rel="noopener" class="proj-link">Visit →</a>
+    </div>
+
+    <div class="proj-row">
+      <span class="proj-n">03</span>
+      <div class="proj-info">
+        <span class="proj-name">Delhi Public Secondary School</span>
+        <span class="proj-desc">Complete school website — admissions, faculty, events.</span>
+      </div>
+      <a href="https://dpsssiddipet.com" target="_blank" rel="noopener" class="proj-link">Visit →</a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="about-l">
+      <p class="about-stmt">
+        <span>One designer.</span>
+        <span>No middlemen.</span>
+        <span>Just results.</span>
+      </p>
+    </div>
+    <div class="about-r">
+      <span class="sec-label">About</span>
+      <p class="about-bio">
+        I'm Vipul, a web designer from Hyderabad. I help small businesses get a professional online presence without paying agency prices or waiting months. I use the latest tools to deliver fast without cutting corners.
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="stat">
+        <span class="stat-v">3–7</span>
+        <span class="stat-l">Days to launch</span>
+      </div>
+      <div class="stat">
+        <span class="stat-v">10+</span>
+        <span class="stat-l">Sites built</span>
+      </div>
+      <div class="stat">
+        <span class="stat-v">100%</span>
+        <span class="stat-l">Mobile ready</span>
+      </div>
+      <div class="stat">
+        <span class="stat-v">1</span>
+        <span class="stat-l">Person. Always.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <span class="sec-label">What I do</span>
+    <h2 class="svc-hl">Pick one.<br>Or all three.</h2>
+
+    <div class="acc-item">
+      <div class="acc-hd" data-acc>
+        <span class="acc-n">01</span>
+        <span class="acc-t">Website Design &amp; Development</span>
+        <span class="acc-ic">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-in">
+          Full custom website built from scratch — designed to your brand, optimised for conversions, and deployed fast. No templates, no shortcuts. Includes mobile responsiveness, basic SEO, and a month of support.
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-hd" data-acc>
+        <span class="acc-n">02</span>
+        <span class="acc-t">Landing Pages</span>
+        <span class="acc-ic">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-in">
+          High-converting single-page sites for product launches, campaigns, or lead generation. Copy-focused, conversion-optimised, live in 3 days. Perfect for ads that need somewhere to land.
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-hd" data-acc>
+        <span class="acc-n">03</span>
+        <span class="acc-t">Website Revamp</span>
+        <span class="acc-ic">+</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-in">
+          Your existing site embarrassing you? I'll redesign it — cleaner, faster, better looking. Same URL, completely new impression. Most revamps done within a week.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Me -->
+  <section id="whyme">
+    <span class="sec-label" style="color:rgba(255,255,255,0.35);opacity:1;">Why me</span>
+    <h2 class="wm-hl">Other agencies take months.</h2>
+    <p class="wm-sub">I take days.</p>
+    <div class="wm-grid">
+      <div class="wm-card">
+        <span class="wm-card-t">Fast</span>
+        <p class="wm-card-d">3–7 days, not 3–7 months.</p>
+      </div>
+      <div class="wm-card">
+        <span class="wm-card-t">Affordable</span>
+        <p class="wm-card-d">Real prices. No agency markup.</p>
+      </div>
+      <div class="wm-card">
+        <span class="wm-card-t">Personal</span>
+        <p class="wm-card-d">You talk to the person who builds it.</p>
+      </div>
+      <div class="wm-card">
+        <span class="wm-card-t">Precise</span>
+        <p class="wm-card-d">Every detail matters. No corner-cutting.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section id="process">
+    <span class="sec-label">How it works</span>
+    <h2 class="proc-hl">A week.<br>Four moves.</h2>
+    <div class="proc-steps">
+      <div class="proc-step">
+        <div class="proc-n">01</div>
+        <h3 class="proc-t">We talk</h3>
+        <span class="proc-d">1 day</span>
+      </div>
+      <div class="proc-step">
+        <div class="proc-n">02</div>
+        <h3 class="proc-t">I scope it</h3>
+        <span class="proc-d">1 day</span>
+      </div>
+      <div class="proc-step">
+        <div class="proc-n">03</div>
+        <h3 class="proc-t">I build it</h3>
+        <span class="proc-d">3–5 days</span>
+      </div>
+      <div class="proc-step">
+        <div class="proc-n">04</div>
+        <h3 class="proc-t">You launch</h3>
+        <span class="proc-d">1 day</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <span class="sec-label">Let's work</span>
+    <h2 class="ct-hl">Got a<br>project?</h2>
+    <p class="ct-sub">I respond within a few hours.</p>
+    <a href="https://wa.me/919918816606" class="wa-btn" id="wa-link">
+      WhatsApp me →
+    </a>
+    <a href="mailto:vipulpreetham1@gmail.com" class="ct-email">vipulpreetham1@gmail.com</a>
+
+    <div class="ist-clock">
+      <span class="ist-label">IST</span>
+      <span class="ist-time" id="clock">--:-- --</span>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span class="ft-l">Vipul Preetham &nbsp;·&nbsp; Web Designer &nbsp;·&nbsp; Hyderabad</span>
+    <span class="ft-r">© 2026</span>
+  </footer>
+
+  <script>
+    /* ── Cursor ── */
+    const cur = document.getElementById('cursor');
+    let mx = 0, my = 0, cx = 0, cy = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      // flip cursor white on dark sections
+      const el = document.elementFromPoint(mx, my);
+      const dark = el && el.closest('#whyme');
+      cur.style.background = dark ? (cur.classList.contains('hovered') ? 'transparent' : '#fff') : '';
+      cur.style.borderColor = dark ? '#fff' : '';
+    });
+
+    (function tick() {
+      cx += (mx - cx) * 0.12;
+      cy += (my - cy) * 0.12;
+      cur.style.left = cx + 'px';
+      cur.style.top  = cy + 'px';
+      requestAnimationFrame(tick);
+    })();
+
+    document.querySelectorAll('a, button, .proj-row, .acc-hd, .nav-cta, .wa-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('hovered'));
+    });
+
+    /* ── Navbar scroll ── */
+    const navEl = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      navEl.classList.toggle('dark', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── IST Clock ── */
+    function tick() {
+      const d = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+      const h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hh = String(h % 12 || 12).padStart(2, '0');
+      document.getElementById('clock').textContent =
+        `${hh}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} ${ampm}`;
+    }
+    tick(); setInterval(tick, 1000);
+
+    /* ── Accordion ── */
+    document.querySelectorAll('[data-acc]').forEach(hd => {
+      hd.addEventListener('click', () => {
+        const item = hd.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+
+    /* ── GSAP Animations ── */
+    window.addEventListener('load', () => {
+      if (!window.gsap) return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      /* hero slide-up */
+      gsap.set(['.hl-thin .hl-inner', '.hl-bold .hl-inner'], { y: '105%' });
+      gsap.set(['.hero-sub', '.hero-foot'], { opacity: 0 });
+
+      const tl = gsap.timeline({ delay: 0.1 });
+      tl.to('.hl-thin .hl-inner', { y: '0%', duration: 1,   ease: 'power4.out' })
+        .to('.hl-bold .hl-inner', { y: '0%', duration: 1,   ease: 'power4.out' }, '-=0.75')
+        .to('.hero-sub',          { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+        .to('.hero-foot',         { opacity: 1, duration: 0.7, ease: 'power3.out' }, '-=0.5');
+
+      const st = (el, vars, trigger, start) => gsap.from(el, {
+        ...vars, immediateRender: false,
+        scrollTrigger: { trigger: trigger || el, start: start || 'top 95%', once: true }
+      });
+
+      /* section labels */
+      gsap.utils.toArray('.sec-label').forEach(el =>
+        st(el, { opacity: 0, x: -16, duration: 0.55, ease: 'power3.out' }));
+
+      /* project rows */
+      gsap.utils.toArray('.proj-row').forEach((row, i) =>
+        st(row, { opacity: 0, y: 32, duration: 0.6, ease: 'power3.out', delay: i * 0.08 }));
+
+      /* about statement */
+      gsap.utils.toArray('.about-stmt span').forEach((s, i) =>
+        st(s, { opacity: 0, x: -24, duration: 0.55, ease: 'power3.out', delay: i * 0.12 }, '.about-stmt'));
+
+      /* stats */
+      gsap.utils.toArray('.stat').forEach((s, i) =>
+        st(s, { opacity: 0, y: 18, duration: 0.5, ease: 'power3.out', delay: i * 0.08 }, '.about-stats'));
+
+      /* why me cards */
+      gsap.utils.toArray('.wm-card').forEach((c, i) =>
+        st(c, { opacity: 0, y: 18, duration: 0.5, ease: 'power3.out', delay: i * 0.08 }, '.wm-grid'));
+
+      /* process steps */
+      gsap.utils.toArray('.proc-step').forEach((s, i) =>
+        st(s, { opacity: 0, y: 24, duration: 0.5, ease: 'power3.out', delay: i * 0.1 }, '.proc-steps'));
+
+      /* contact */
+      st('.ct-hl',  { opacity: 0, y: 48, duration: 0.8, ease: 'power4.out' }, '#contact', 'top 85%');
+      st(['.ct-sub', '.wa-btn', '.ct-email'], { opacity: 0, y: 18, duration: 0.6, ease: 'power3.out', stagger: 0.1 }, '#contact', 'top 80%');
+    });
+  </script>
 </body>
 </html>
